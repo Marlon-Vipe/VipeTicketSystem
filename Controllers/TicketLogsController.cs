@@ -27,7 +27,7 @@ namespace VipeSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TicketLog ticketLog = db.TicketLogs.Find(id);
+            Ticket_Log ticketLog = db.TicketLogs.Find(id);
             if (ticketLog == null)
             {
                 return HttpNotFound();
@@ -46,7 +46,7 @@ namespace VipeSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id_Ticket_Log,TicketId,ChangedBy,Field,OldValue,NewValue,ChangedAt")] TicketLog ticketLog)
+        public ActionResult Create([Bind(Include = "Id_Ticket_Log,TicketId,ChangedBy,Field,OldValue,NewValue,ChangedAt")] Ticket_Log ticketLog)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace VipeSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TicketLog ticketLog = db.TicketLogs.Find(id);
+            Ticket_Log ticketLog = db.TicketLogs.Find(id);
             if (ticketLog == null)
             {
                 return HttpNotFound();
@@ -78,7 +78,7 @@ namespace VipeSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id_Ticket_Log,TicketId,ChangedBy,Field,OldValue,NewValue,ChangedAt")] TicketLog ticketLog)
+        public ActionResult Edit([Bind(Include = "Id_Ticket_Log,TicketId,ChangedBy,Field,OldValue,NewValue,ChangedAt")] Ticket_Log ticketLog)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace VipeSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TicketLog ticketLog = db.TicketLogs.Find(id);
+            Ticket_Log ticketLog = db.TicketLogs.Find(id);
             if (ticketLog == null)
             {
                 return HttpNotFound();
@@ -109,7 +109,7 @@ namespace VipeSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            TicketLog ticketLog = db.TicketLogs.Find(id);
+            Ticket_Log ticketLog = db.TicketLogs.Find(id);
             db.TicketLogs.Remove(ticketLog);
             db.SaveChanges();
             return RedirectToAction("Index");

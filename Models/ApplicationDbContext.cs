@@ -12,5 +12,5 @@ public class ApplicationDbContext : DbContext
     public DbSet<Priority> Priorities { get; set; }
     public DbSet<Ticket> Tickets { get; set; }
     public DbSet<Comment> Comments { get; set; }
-    public DbSet<TicketLog> TicketLogs { get; set; }
+    public DbSet<Ticket_Log> TicketLogs { get; set; }
 }

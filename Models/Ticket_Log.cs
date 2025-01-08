@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace VipeSystem.Models
 {
-    public class TicketLog
+    public class Ticket_Log
     {
         [Key]
         public int Id_Ticket_Log { get; set; }
