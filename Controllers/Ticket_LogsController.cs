@@ -10,7 +10,7 @@ using VipeSystem.Models;
 
 namespace VipeSystem.Controllers
 {
-    public class TicketLogsController : Controller
+    public class Ticket_LogsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 

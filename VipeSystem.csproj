@@ -228,7 +228,7 @@
     <Compile Include="Controllers\PrioritiesController.cs" />
     <Compile Include="Controllers\StatusController.cs" />
     <Compile Include="Controllers\TestController.cs" />
-    <Compile Include="Controllers\TicketLogsController.cs" />
+    <Compile Include="Controllers\Ticket_LogsController.cs" />
     <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
