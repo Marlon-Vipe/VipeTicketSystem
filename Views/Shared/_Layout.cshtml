@@ -19,7 +19,12 @@
                 <ul class="navbar-nav flex-grow-1">
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Tickets", "Index", "Tickets", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Categorias", "Index", "Categories", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Comentarios", "Index", "Comments", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Estatus", "Index", "Status", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("TicketLogs", "Index", "TicketLogs", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Usuarios", "Index", "Users", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
             </div>
         </div>
@@ -28,7 +33,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Vipe Tickets Application</p>
         </footer>
     </div>
 
