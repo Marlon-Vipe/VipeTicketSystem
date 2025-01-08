@@ -19,11 +19,11 @@ namespace VipeSystem.Models
         public int Status { get; set; }
 
         public int Priority { get; set; }
-
+        [Column("created_by")]  // Agregar esta anotación
         public int CreatedBy { get; set; }
-
+        [Column("assigned_to")]  // Agregar esta anotación
         public int? AssignedTo { get; set; }
-
+        [Column("category_id")]  // Agregar esta anotación
         public int? CategoryId { get; set; }
         [Column("created_at")]  // Agregar esta anotación
         public DateTime? CreatedAt { get; set; }
