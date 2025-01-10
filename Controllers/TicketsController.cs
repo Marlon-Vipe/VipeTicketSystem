@@ -52,8 +52,8 @@ namespace VipeSystem.Controllers
                 if (!userExists)
                 {
                     ModelState.AddModelError("CreatedBy", "El usuario creador seleccionado no existe.");
-                    ViewBag.Users = new SelectList(db.Users, "Id_User", "Nombre");
-                    ViewBag.Categories = new SelectList(db.Categories, "Id_Category", "Nombre");
+                    ViewBag.Users = new SelectList(db.Users, "Id_User", "Name");
+                    ViewBag.Categories = new SelectList(db.Categories, "Id_Category", "Name");
                     return View(ticket);
                 }
 
@@ -63,11 +63,10 @@ namespace VipeSystem.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Users = new SelectList(db.Users, "Id_User", "Nombre");
-            ViewBag.Categories = new SelectList(db.Categories, "Id_Category", "Nombre");
+            ViewBag.Users = new SelectList(db.Users, "Id_User", "Name");
+            ViewBag.Categories = new SelectList(db.Categories, "Id_Category", "Name");
             return View(ticket);
         }
-
         // GET: Tickets/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -75,41 +74,59 @@ namespace VipeSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Ticket ticket = db.Tickets.Find(id);
             if (ticket == null)
             {
                 return HttpNotFound();
             }
 
-            ViewBag.Users = new SelectList(db.Users, "Id_User", "Nombre", ticket.CreatedBy);
-            ViewBag.Categories = new SelectList(db.Categories, "Id_Category", "Nombre", ticket.CategoryId);
+            ViewBag.Users = new SelectList(db.Users, "Id_User", "Name", ticket.CreatedBy);
+            ViewBag.Categories = new SelectList(db.Categories, "Id_Category", "Name", ticket.CategoryId);
+
             return View(ticket);
         }
 
         // POST: Tickets/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id_Ticket,Title,Description,Status,Priority,CreatedBy,AssignedTo,CategoryId,CreatedAt,UpdatedAt")] Ticket ticket)
+        public ActionResult Edit([Bind(Include = "Id_Ticket,Title,Description,Status,Priority,CreatedBy,AssignedTo,CategoryId")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
+                // Verificar si el usuario creador existe
                 var userExists = db.Users.Any(u => u.Id_User == ticket.CreatedBy);
                 if (!userExists)
                 {
                     ModelState.AddModelError("CreatedBy", "El usuario creador seleccionado no existe.");
-                    ViewBag.Users = new SelectList(db.Users, "Id_User", "Nombre", ticket.CreatedBy);
-                    ViewBag.Categories = new SelectList(db.Categories, "Id_Category", "Nombre", ticket.CategoryId);
+                    ViewBag.Users = new SelectList(db.Users, "Id_User", "Name", ticket.CreatedBy);
+                    ViewBag.Categories = new SelectList(db.Categories, "Id_Category", "Name", ticket.CategoryId);
                     return View(ticket);
                 }
 
-                ticket.UpdatedAt = DateTime.Now;
-                db.Entry(ticket).State = EntityState.Modified;
-                db.SaveChanges();
+                // Obtener el ticket original
+                var originalTicket = db.Tickets.Find(ticket.Id_Ticket);
+
+                if (originalTicket != null)
+                {
+                    // No modificar CreatedAt, mantener el valor original
+                    ticket.CreatedAt = originalTicket.CreatedAt;
+
+                    // Solo actualizar UpdatedAt
+                    ticket.UpdatedAt = DateTime.Now;
+
+                    // Reasignar el ticket y actualizar el estado solo para las propiedades modificadas
+                    db.Entry(originalTicket).CurrentValues.SetValues(ticket);
+
+                    // Guardar los cambios
+                    db.SaveChanges();
+                }
+
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Users = new SelectList(db.Users, "Id_User", "Nombre", ticket.CreatedBy);
-            ViewBag.Categories = new SelectList(db.Categories, "Id_Category", "Nombre", ticket.CategoryId);
+            ViewBag.Users = new SelectList(db.Users, "Id_User", "Name", ticket.CreatedBy);
+            ViewBag.Categories = new SelectList(db.Categories, "Id_Category", "Name", ticket.CategoryId);
             return View(ticket);
         }
 
