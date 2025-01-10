@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using VipeSystem.Models;
 
@@ -38,23 +36,35 @@ namespace VipeSystem.Controllers
         // GET: Tickets/Create
         public ActionResult Create()
         {
+            ViewBag.Users = new SelectList(db.Users, "Id_User", "Name");
+            ViewBag.Categories = new SelectList(db.Categories, "Id_Category", "Name");
             return View();
         }
 
         // POST: Tickets/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id_Ticket,Title,Description,Status,Priority,CreatedBy,AssignedTo,CategoryId,CreatedAt,UpdatedAt")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
+                var userExists = db.Users.Any(u => u.Id_User == ticket.CreatedBy);
+                if (!userExists)
+                {
+                    ModelState.AddModelError("CreatedBy", "El usuario creador seleccionado no existe.");
+                    ViewBag.Users = new SelectList(db.Users, "Id_User", "Nombre");
+                    ViewBag.Categories = new SelectList(db.Categories, "Id_Category", "Nombre");
+                    return View(ticket);
+                }
+
+                ticket.CreatedAt = DateTime.Now;
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
+            ViewBag.Users = new SelectList(db.Users, "Id_User", "Nombre");
+            ViewBag.Categories = new SelectList(db.Categories, "Id_Category", "Nombre");
             return View(ticket);
         }
 
@@ -70,22 +80,36 @@ namespace VipeSystem.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.Users = new SelectList(db.Users, "Id_User", "Nombre", ticket.CreatedBy);
+            ViewBag.Categories = new SelectList(db.Categories, "Id_Category", "Nombre", ticket.CategoryId);
             return View(ticket);
         }
 
         // POST: Tickets/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id_Ticket,Title,Description,Status,Priority,CreatedBy,AssignedTo,CategoryId,CreatedAt,UpdatedAt")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
+                var userExists = db.Users.Any(u => u.Id_User == ticket.CreatedBy);
+                if (!userExists)
+                {
+                    ModelState.AddModelError("CreatedBy", "El usuario creador seleccionado no existe.");
+                    ViewBag.Users = new SelectList(db.Users, "Id_User", "Nombre", ticket.CreatedBy);
+                    ViewBag.Categories = new SelectList(db.Categories, "Id_Category", "Nombre", ticket.CategoryId);
+                    return View(ticket);
+                }
+
+                ticket.UpdatedAt = DateTime.Now;
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+            ViewBag.Users = new SelectList(db.Users, "Id_User", "Nombre", ticket.CreatedBy);
+            ViewBag.Categories = new SelectList(db.Categories, "Id_Category", "Nombre", ticket.CategoryId);
             return View(ticket);
         }
 
