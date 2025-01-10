@@ -8,16 +8,12 @@ namespace VipeSystem.Models
     {
         [Key]
         public int Id_Ticket { get; set; }
-
         [Required]
         [StringLength(255)]
         public string Title { get; set; }
-
         [Required]
         public string Description { get; set; }
-
         public int Status { get; set; }
-
         public int Priority { get; set; }
         [Column("created_by")]  // Agregar esta anotación
         public int CreatedBy { get; set; }
