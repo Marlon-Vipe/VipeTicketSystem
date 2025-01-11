@@ -42,14 +42,16 @@ namespace VipeSystem.Controllers
         }
 
         // POST: Categories/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id_Category,Name,Description,CreatedAt")] Category category)
+        public ActionResult Create([Bind(Include = "Id_Category,Name,Description")] Category category)
         {
             if (ModelState.IsValid)
             {
+                // Asignar la fecha de creación
+                category.CreatedAt = DateTime.Now;
+                category.UpdatedAt = DateTime.Now;
+
                 db.Categories.Add(category);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -74,16 +76,26 @@ namespace VipeSystem.Controllers
         }
 
         // POST: Categories/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id_Category,Name,Description,CreatedAt")] Category category)
+        public ActionResult Edit([Bind(Include = "Id_Category,Name,Description")] Category category)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(category).State = EntityState.Modified;
-                db.SaveChanges();
+                // Obtener la categoría original
+                var originalCategory = db.Categories.Find(category.Id_Category);
+                if (originalCategory != null)
+                {
+                    // Mantener la fecha de creación original
+                    category.CreatedAt = originalCategory.CreatedAt;
+
+                    // Actualizar la fecha de última modificación
+                    category.UpdatedAt = DateTime.Now;
+
+                    // Reasignar valores y guardar cambios
+                    db.Entry(originalCategory).CurrentValues.SetValues(category);
+                    db.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
             return View(category);
