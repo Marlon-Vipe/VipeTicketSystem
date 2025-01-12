@@ -44,13 +44,12 @@ namespace VipeSystem.Controllers
         // POST: Categories/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id_Category,Name,Description")] Category category)
+        public ActionResult Create([Bind(Include = "Id_Category,Name,Description,CreatedAt")] Category category)
         {
             if (ModelState.IsValid)
             {
-                // Asignar la fecha de creación
+                // Asignar fecha y hora actual al campo CreatedAt
                 category.CreatedAt = DateTime.Now;
-                category.UpdatedAt = DateTime.Now;
 
                 db.Categories.Add(category);
                 db.SaveChanges();
@@ -78,7 +77,7 @@ namespace VipeSystem.Controllers
         // POST: Categories/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id_Category,Name,Description")] Category category)
+        public ActionResult Edit([Bind(Include = "Id_Category,Name,Description,CreatedAt")] Category category)
         {
             if (ModelState.IsValid)
             {
@@ -86,13 +85,10 @@ namespace VipeSystem.Controllers
                 var originalCategory = db.Categories.Find(category.Id_Category);
                 if (originalCategory != null)
                 {
-                    // Mantener la fecha de creación original
+                    // Mantener la fecha y hora original del campo CreatedAt
                     category.CreatedAt = originalCategory.CreatedAt;
 
-                    // Actualizar la fecha de última modificación
-                    category.UpdatedAt = DateTime.Now;
-
-                    // Reasignar valores y guardar cambios
+                    // Actualizar los valores de la categoría
                     db.Entry(originalCategory).CurrentValues.SetValues(category);
                     db.SaveChanges();
                 }
