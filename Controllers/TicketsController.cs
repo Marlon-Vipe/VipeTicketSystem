@@ -15,7 +15,12 @@ namespace VipeSystem.Controllers
         // GET: Tickets
         public ActionResult Index()
         {
-            return View(db.Tickets.ToList());
+            var tickets = db.Tickets
+                            .Include(t => t.AssignedToNavigation)// Relación con Usuarios
+                            .Include(t => t.CategoryIdNavigation)  // Relación con Categorías
+                            .ToList();
+
+            return View(tickets);
         }
 
         // GET: Tickets/Details/5
