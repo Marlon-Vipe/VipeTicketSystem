@@ -16,7 +16,9 @@ namespace VipeSystem.Models
         [Required]
         [StringLength(50)]
         public string Description { get; set; }
-        [Column("created_at")]   // Agregar esta anotación
-        public DateTime? CreatedAt { get; set; }
+
+        [Column("created_at")]
+        [Required]
+        public DateTime CreatedAt { get; set; } = DateTime.Now; // Asignar la fecha y hora actual por defecto
     }
 }
