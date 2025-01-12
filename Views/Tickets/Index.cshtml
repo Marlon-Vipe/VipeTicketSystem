@@ -86,8 +86,8 @@
                             <td>@Html.DisplayFor(modelItem => item.Status)</td>
                             <td>@Html.DisplayFor(modelItem => item.Priority)</td>
                             <td>@Html.DisplayFor(modelItem => item.CreatedBy)</td>
-                            <td>@Html.DisplayFor(modelItem => item.AssignedTo)</td>
-                            <td>@Html.DisplayFor(modelItem => item.CategoryId)</td>
+                            <td>@item.AssignedToNavigation?.Name</td> <!-- Mostrar el nombre del usuario asignado -->
+                            <td>@item.CategoryIdNavigation?.Name</td> <!-- Mostrar el nombre de la categoría -->
                             <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
                             <td>@Html.DisplayFor(modelItem => item.UpdatedAt)</td>
                             <td class="action-icons">
