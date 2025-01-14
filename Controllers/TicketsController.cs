@@ -23,7 +23,7 @@ namespace VipeSystem.Controllers
             return View(tickets);
         }
 
-        // GET: Tickets/Details/5
+        // GET: Tickets/Details/
         public ActionResult Details(int? id)
         {
             if (id == null)
