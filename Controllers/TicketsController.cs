@@ -17,7 +17,7 @@ namespace VipeSystem.Controllers
         {
             var tickets = db.Tickets
                             .Include(t => t.AssignedToNavigation)// Relación con Usuarios
-                            .Include(t => t.CategoryIdNavigation)  // Relación con Categorías
+                            .Include(t => t.CategoryIdNavigation)  // Relación con Categorías.
                             .ToList();
 
             return View(tickets);
