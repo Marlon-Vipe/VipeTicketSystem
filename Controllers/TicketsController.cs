@@ -16,7 +16,7 @@ namespace VipeSystem.Controllers
         public ActionResult Index()
         {
             var tickets = db.Tickets
-                            .Include(t => t.AssignedToNavigation)// Relación con Usuarios
+                            .Include(t => t.AssignedToNavigation)// Relación con Usuarios.
                             .Include(t => t.CategoryIdNavigation)  // Relación con Categorías.
                             .ToList();
 
