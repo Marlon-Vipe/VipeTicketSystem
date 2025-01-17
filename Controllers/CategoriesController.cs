@@ -27,11 +27,13 @@ namespace VipeSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Category category = db.Categories.Find(id);
             if (category == null)
             {
                 return HttpNotFound();
             }
+
             return View(category);
         }
 
@@ -44,13 +46,11 @@ namespace VipeSystem.Controllers
         // POST: Categories/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id_Category,Name,Description,CreatedAt")] Category category)
+        public ActionResult Create([Bind(Include = "Id_Category,Name,Description")] Category category)
         {
             if (ModelState.IsValid)
             {
-                // Asignar fecha y hora actual al campo CreatedAt
                 category.CreatedAt = DateTime.Now;
-
                 db.Categories.Add(category);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -66,11 +66,13 @@ namespace VipeSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Category category = db.Categories.Find(id);
             if (category == null)
             {
                 return HttpNotFound();
             }
+
             return View(category);
         }
 
@@ -81,19 +83,18 @@ namespace VipeSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Obtener la categoría original
-                var originalCategory = db.Categories.Find(category.Id_Category);
+                // Mantener el campo CreatedAt original
+                var originalCategory = db.Categories.AsNoTracking().FirstOrDefault(c => c.Id_Category == category.Id_Category);
                 if (originalCategory != null)
                 {
-                    // Mantener la fecha y hora original del campo CreatedAt
                     category.CreatedAt = originalCategory.CreatedAt;
-
-                    // Actualizar los valores de la categoría
-                    db.Entry(originalCategory).CurrentValues.SetValues(category);
-                    db.SaveChanges();
                 }
+
+                db.Entry(category).State = EntityState.Modified;
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
             return View(category);
         }
 
@@ -104,11 +105,13 @@ namespace VipeSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Category category = db.Categories.Find(id);
             if (category == null)
             {
                 return HttpNotFound();
             }
+
             return View(category);
         }
 
@@ -129,6 +132,7 @@ namespace VipeSystem.Controllers
             {
                 db.Dispose();
             }
+
             base.Dispose(disposing);
         }
     }
